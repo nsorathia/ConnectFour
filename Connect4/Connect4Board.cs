@@ -8,6 +8,18 @@ namespace Connect4
     {
         const int NUM_OF_CONSECUTIVE_TOKENS_FOR_WIN = 4;
 
+        public int Rows
+        {
+            get;
+            private set;
+        }
+
+        public int Columns
+        {
+            get;
+            private set;
+        }
+
         public Token[,] Grid
         {
             get;
@@ -19,20 +31,26 @@ namespace Connect4
 
         public Connect4Board(int rows, int columns)
         {
-            Grid = new Token[rows, columns];
-            Initialize();
+            Rows = rows;
+            Columns = columns;
+
+            var grid = new Token[rows, columns];
+            Initialize(grid);
+            Grid = grid;
         }
 
         //Initialize the Grid with empty tokens
-        private void Initialize()
+        protected void Initialize(Token[,] grid)
         {
-
+            for (int i = 0; i < grid.GetLength(0); i++)
+                for (int j = 0; j < grid.GetLength(1); j++)
+                    grid[i, j] = Token.Empty;
         }
 
             
         public override string ToString()
         {
-            return String.Empty;
+            return "X";
         }
 
 

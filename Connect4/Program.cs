@@ -14,9 +14,8 @@ namespace Connect4
                 var game = Container.GetObject<IGame>();
                 game.Play();
 
-                Console.WriteLine("Would you like to play again? YES ('Y') or NO ('N')");
+                Console.WriteLine("Want to start a new game? YES ('Y') or NO ('N')");
                 input = Console.ReadLine();
-
             }
         }
     }
