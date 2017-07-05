@@ -5,11 +5,18 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Connect4Tests
 {
     [TestClass]
-    public class PersonTests : Person
+    public class PersonTests : Connect4Player
     {
 
+
         [TestMethod]
-        public void SomeTest()
+        public void MoveThrowsExceptionIfBoardIsNull()
+        {
+
+        }
+
+        [TestMethod]
+        public void MoveReturnsValidcolumnIndex()
         {
 
         }

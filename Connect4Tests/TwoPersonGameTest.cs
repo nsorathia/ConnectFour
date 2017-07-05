@@ -11,21 +11,21 @@ namespace Connect4Tests
         [ExpectedException (typeof(ArgumentNullException))]
         public void TwoPlayerGameConstructorShouldNotAllowNullBoardProperty()
         {
-            new TwoPersonGame(null, new Person(), new Person());
+            new TwoPersonGame(null, new Connect4Player(), new Connect4Player());
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TwoPlayerGameConstructorShouldNotAllowNullPlayer1Property()
         {
-            new TwoPersonGame(new Connect4Board(), null, new Person());
+            new TwoPersonGame(new Connect4Board(), null, new Connect4Player());
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TwoPlayerGameConstructorShouldNotAllowNullPlayer2Property()
         {
-            new TwoPersonGame(new Connect4Board(), new Person(), null);
+            new TwoPersonGame(new Connect4Board(), new Connect4Player(), null);
         }
     }
 }

@@ -59,7 +59,53 @@ namespace Connect4
             return false;
         }
 
-        
+        public bool IsUserMoveValid(int userMove)
+        {
+            return IsColumnFull(userMove, this.Grid);
+        }
+
+        public void SetToken(int column, Token playersToken, Token[,] grid)
+        {
+            if (playersToken == Token.Empty)
+                throw new ArgumentException("The token to set must be either Red or Yellow");
+
+            int columnIndex = column - 1;
+            int rows = grid.GetLength(0);
+
+            for (int i = rows; i > 0; i--)
+            {
+                if (grid[i - 1, columnIndex] == Token.Empty)
+                {
+                    grid[i - 1, columnIndex] = playersToken;
+                    break;
+                }
+            }
+        }
+
+        public bool IsColumnFull(int columnIndex, Token[,] grid)
+        {
+            #region validation
+
+            if (columnIndex < 0)
+                throw new ArgumentException("The columnIndex must a positive value", "columnIndex");
+
+            if (grid == null)
+                throw new ArgumentNullException("grid");
+
+            //Check columnIdex passed is not greater than the grid's width 
+            if (columnIndex > grid.GetLength(1))
+                throw new IndexOutOfRangeException("The columnIndex is greater than the width of the Board");
+
+            #endregion
+
+            bool columnIsFull = false;
+
+            if (grid[0, columnIndex] != Token.Empty)
+                columnIsFull = true;
+
+            return columnIsFull;
+        }
+
     }
 }
 

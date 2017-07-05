@@ -4,6 +4,6 @@
     {
         Token Token { get; set; }
         string Name { get; set; }
-        void Move(IBoard board);
+        int Move(IBoard board);
     }
 }

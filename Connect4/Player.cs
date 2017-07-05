@@ -16,7 +16,7 @@ namespace Connect4
             set;
         }
 
-        public abstract void Move(IBoard board);
+        public abstract int Move(IBoard board);
 
     }
 

@@ -13,7 +13,7 @@ namespace Connect4
             _instance = new ServiceCollection()
                 .AddTransient<IGame, TwoPersonGame>()
                 .AddTransient<IBoard, Connect4Board>()
-                .AddTransient<IPlayer, Person>()
+                .AddTransient<IPlayer, Connect4Player>()
                 .BuildServiceProvider();
         }
 
