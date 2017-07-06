@@ -15,7 +15,7 @@ namespace Connect4
             var c4Board = iBoard as Connect4Board;
             int column = 0;
 
-            while (column < 1 || column > c4Board.Columns)
+            while (column < 1 || column > c4Board.Grid.GetLength(1))
             {
                 var userChoice = GetUserMove(c4Board);
 
@@ -37,7 +37,7 @@ namespace Connect4
         /// <returns></returns>
         private string GetUserMove(Connect4Board c4Board)
         {
-            Console.WriteLine(string.Format("...{0}, please enter a column from 1 to {1}.", this.Name, c4Board.Columns));
+            Console.WriteLine(string.Format("...{0}, please enter a column from 1 to {1}.", this.Name, c4Board.Grid.GetLength(1)));
             return Console.ReadLine();
         }
 

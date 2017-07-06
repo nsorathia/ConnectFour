@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Connect4Tests
 {
     [TestClass]
-    public class PersonTests : Connect4Player
+    public class Connect4PlayerTests : Connect4Player
     {
 
 
