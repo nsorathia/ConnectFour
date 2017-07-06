@@ -11,7 +11,7 @@ namespace Connect4
         static Container()
         {
             _instance = new ServiceCollection()
-                .AddTransient<IGame, TwoPersonGame>()
+                .AddTransient<IGame, TwoPlayerGame>()
                 .AddTransient<IBoard, Connect4Board>()
                 .AddTransient<IPlayer, Connect4Player>()
                 .AddSingleton<IDataDevice, ConsoleDevice>()

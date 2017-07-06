@@ -5,7 +5,7 @@ using Connect4.Interfaces;
 
 namespace Connect4
 {
-    public class TwoPersonGame : IGame
+    public class TwoPlayerGame : IGame
     {
         public IBoard Board
         {
@@ -27,10 +27,10 @@ namespace Connect4
             get; set;
         }
                 
-        public TwoPersonGame() { }
+        public TwoPlayerGame() { }
 
         //creates a two player game and sets the players name
-        public TwoPersonGame(IBoard board, IDataDevice dataDevice, IPlayer player1, IPlayer player2)
+        public TwoPlayerGame(IBoard board, IDataDevice dataDevice, IPlayer player1, IPlayer player2)
         {
             Board = board ?? throw new ArgumentNullException("board");
             DataDevice = dataDevice ?? throw new ArgumentNullException("dataDevice");
