@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Connect4.Interfaces
 {
-    public interface IGame
+    public interface IDataDevice
     {
-        IList<IPlayer> Players { get; set; }
-        void Play();
+        string ReadLine();
+        void WriteLine(string input);
     }
 }

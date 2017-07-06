@@ -4,8 +4,8 @@ namespace Connect4
 {
     public enum Token
     {
-        Empty,
-        Yellow,
-        Red,
+        Empty = 0,
+        Red = 1,
+        Yellow = 2        
     }
 }

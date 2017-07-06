@@ -5,55 +5,40 @@ namespace Connect4
 {
     public class Connect4Player : Player
     {
-        public Connect4Player() { }
+        public Connect4Player(IDataDevice datadevice) : base(datadevice) { }
 
+        /// <summary>
+        /// Implements IBoard.Move : Validates user input and returns the
+        /// column number of where the user wants to drop her token 
+        /// </summary>
+        /// <param name="iBoard"></param>
+        /// <returns>int</returns>
         public override int Move(IBoard iBoard)
         {
             if (iBoard == null)
                 throw new ArgumentNullException("iBoard");
 
-            var c4Board = iBoard as Connect4Board;
             int column = 0;
-
-            while (column < 1 || column > c4Board.Grid.GetLength(1))
+            while (column < 1 || column > iBoard.Columns)
             {
-                var userChoice = GetUserMove(c4Board);
+                //Get User column Choice
+                this.DataDevice.WriteLine(string.Format("...{0}, please enter a column from 1 to {1}.", this.Name, iBoard.Columns));
+                var userChoice = this.DataDevice.ReadLine();
 
-                if (!IsNumeric(userChoice, out column))
+                //validate userchoice is integer
+                if (!Int32.TryParse(userChoice, out column))
+                {
+                    this.DataDevice.WriteLine("...You must enter a numeric value. Try again.");
                     continue;
+                }                    
 
-                if (!c4Board.IsUserMoveValid(column - 1))
-                    Console.WriteLine("...The column you chose is full. Try another");
+                //validate user choice is within bounds and that the column is not full
+                if (!iBoard.IsUserMoveValid(column - 1))
+                    this.DataDevice.WriteLine("...The column you chose is full. Try another");
             }
 
             return column;
         }
-
-
-        /// <summary>
-        /// Reads the raw user's input
-        /// </summary>
-        /// <param name="board"></param>
-        /// <returns></returns>
-        private string GetUserMove(Connect4Board c4Board)
-        {
-            Console.WriteLine(string.Format("...{0}, please enter a column from 1 to {1}.", this.Name, c4Board.Grid.GetLength(1)));
-            return Console.ReadLine();
-        }
-
-        private bool IsNumeric(string input, out int column)
-        {
-            column = 0;
-            bool isNumeric = Int32.TryParse(input, out column);
-
-            if (!isNumeric)
-                Console.WriteLine("...You must enter a numeric value. Try again.");
-
-            return isNumeric;
-        }
-
-
-
 
     }
 }

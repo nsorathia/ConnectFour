@@ -8,23 +8,6 @@ namespace Connect4
     {
         public const int NUM_OF_CONSECUTIVE_TOKENS_FOR_WIN = 4;
 
-        public int Rows
-        {
-            get;
-            private set;
-        }
-
-        public int Columns
-        {
-            get;
-            private set;
-        }
-
-        public Token[,] Grid
-        {
-            get;
-            private set;
-        }
 
         //default constuctor sets grid to 6 rows and 7 columns
         public Connect4Board() : this(6, 7) { }
@@ -38,14 +21,94 @@ namespace Connect4
             Initialize();            
         }
 
-        //Initializes the Grid with empty tokens
-        private void Initialize()
+        #region Implemented IBoard methods and properties
+
+        /// <summary>
+        /// Implements IBoard.Rows
+        /// </summary>
+        public int Rows
         {
-            for (int i = 0; i < this.Rows; i++)
-                for (int j = 0; j < this.Columns; j++)
-                    this.Grid[i, j] = Token.Empty;
+            get;
+            set;
         }
 
+        /// <summary>
+        /// Implements IBoard.Columns
+        /// </summary>
+        public int Columns
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Implements IBoard.CheckforWin: Test the board for a win given the column number of the last token played   
+        /// </summary>
+        /// <param name="lastMove"></param>
+        /// <returns>bool</returns>
+        public bool CheckForWin(int lastMove)
+        {
+            if (lastMove < 1)
+                throw new ArgumentOutOfRangeException("lastUserMove", "the lastUserMove Paramater must be > 0");
+
+            bool win = false;
+
+            int columnIndex = lastMove - 1;
+            int rowIndex = FindRowIndexForLastDroppedToken(columnIndex);
+          
+            if (IsHorizontalWin(rowIndex, columnIndex)
+                || IsVerticalWin(rowIndex, columnIndex)
+                || IsUpDiagonalWin(rowIndex, columnIndex)
+                || IsDownDiagonalWin(rowIndex, columnIndex))
+                win = true;
+
+            return win;
+        }
+
+        /// <summary>
+        /// Implements IBoard.IsUserMoveValid. Tests whether User's chosen move is valid
+        /// </summary>
+        /// <param name="userMove"></param>
+        /// <returns></returns>
+        public bool IsUserMoveValid(int userMove)
+        {
+            return IsColumnIndexWithinBounds(userMove) && IsColumnFull(userMove);
+        }
+
+        /// <summary>
+        /// Implements SetUserMove: Updates the boards grid with the 
+        /// player's token given the column number
+        /// </summary>
+        /// <param name="move"></param>
+        /// <param name="token"></param>
+        public void SetUserMove(int move, Token token)
+        {
+            if (token == Token.Empty)
+                throw new ArgumentException("The token to set must be either Red or Yellow");
+
+            int columnIndex = move - 1;
+            int rows = this.Rows;
+
+            for (int i = rows; i > 0; i--)
+            {
+                //sets the token in the lowest empty spot for the column
+                if (this.Grid[i - 1, columnIndex] == Token.Empty)
+                {
+                    this.Grid[i - 1, columnIndex] = token;
+                    break;
+                }
+            }
+        }
+
+
+        #endregion
+
+        public Token[,] Grid
+        {
+            get;
+            private set;
+        }
+        
         /// <summary>
         /// String Representation of the Connect4 Board. [X: Red], [O: Yellow], [#: Empty]
         /// </summary>
@@ -78,66 +141,34 @@ namespace Connect4
             return sBuilder.ToString();
         }
 
+        #region Protected Methods 
+        //marked protected so they can be Accessible for testing via inherited class (Connect4BoardTests)
+
         /// <summary>
-        /// Test the board for a win given the column number of the last token played   
+        /// Initializes the Grid with empty tokens
         /// </summary>
-        /// <param name="lastMove"></param>
-        /// <returns>bool</returns>
-        public bool CheckForWin(int lastMove)
+        protected void Initialize()
         {
-            if (lastMove < 1)
-                throw new ArgumentOutOfRangeException("lastUserMove", "the lastUserMove Paramater must be > 0");
-
-            bool win = false;
-
-            int columnIndex = lastMove - 1;
-            int rowIndex = FindRowIndexForLastDroppedToken(columnIndex);
-          
-            if (IsHorizontalWin(rowIndex, columnIndex)
-                || IsVerticalWin(rowIndex, columnIndex)
-                || IsUpDiagonalWin(rowIndex, columnIndex)
-                || IsDownDiagonalWin(rowIndex, columnIndex))
-                win = true;
-
-            return win;
+            for (int i = 0; i < this.Rows; i++)
+                for (int j = 0; j < this.Columns; j++)
+                    this.Grid[i, j] = Token.Empty;
         }
 
         /// <summary>
-        /// Updates the boards grid with the player's token given the column number
+        /// Checks if the columnIndex is within the bounds of the board's grid.
         /// </summary>
-        /// <param name="column"></param>
-        /// <param name="playersToken"></param>
-        public void SetToken(int column, Token playersToken)
-        {
-            if (playersToken == Token.Empty)
-                throw new ArgumentException("The token to set must be either Red or Yellow");
-
-            int columnIndex = column - 1;
-            int rows = this.Rows;
-
-            for (int i = rows; i > 0; i--)
-            {
-                //sets the token in the lowest empty spot for the column
-                if (this.Grid[i - 1, columnIndex] == Token.Empty)
-                {
-                    this.Grid[i - 1, columnIndex] = playersToken;
-                    break;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Implements IBoard.IsUserMoveValid. Tests whether User's chosen move is valid
-        /// </summary>
-        /// <param name="userMove"></param>
+        /// <param name="columnIndex"></param>
         /// <returns></returns>
-        public bool IsUserMoveValid(int userMove)
+        protected bool IsColumnIndexWithinBounds(int columnIndex)
         {
-            return IsColumnFull(userMove);
+            int uBound = this.Grid.GetUpperBound(1);
+            if (columnIndex > 0 && columnIndex <= uBound)
+                return true;
+
+            return false;
+
+
         }
-
-
-        #region Protected Methods
 
         /// <summary>
         /// Determines if the specified Column is Full
@@ -146,17 +177,6 @@ namespace Connect4
         /// <returns></returns>
         protected bool IsColumnFull(int columnIndex)
         {
-            #region validation
-
-            if (columnIndex < 0)
-                throw new ArgumentException("The columnIndex must a positive value", "columnIndex");
-
-            //Check columnIdex passed is not greater than the grid's width 
-            if (columnIndex > this.Columns)
-                throw new IndexOutOfRangeException("The columnIndex is greater than the width of the Board");
-
-            #endregion
-
             bool columnIsFull = false;
 
             if (this.Grid[0, columnIndex] != Token.Empty)
@@ -194,8 +214,7 @@ namespace Connect4
 
             return false;
         }
-
-
+        
         /// <summary>
         /// Test for Vertical win given the coordinates of the last dropped token 
         /// </summary>
@@ -443,6 +462,7 @@ namespace Connect4
                 return;
             }
         }
+        
         /// <summary>
         /// Determines the right upper bound for a down diagnal test given coordinates of the last dropped token
         /// </summary>

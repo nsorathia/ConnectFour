@@ -4,6 +4,12 @@ namespace Connect4
 {
     public abstract class Player : IPlayer
     {
+        public IDataDevice DataDevice
+        {
+            get;
+            set;
+        }
+
         public string Name
         {
             get;
@@ -14,6 +20,11 @@ namespace Connect4
         {
             get;
             set;
+        }
+
+        public Player(IDataDevice datadevice)
+        {
+            DataDevice = datadevice;
         }
 
         public abstract int Move(IBoard board);

@@ -4,6 +4,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Connect4Tests
 {
+    /// <summary>
+    /// Test class inherits Connect4Board to access protected methods.
+    /// </summary>
     [TestClass]
     public class Connect4BoardTests : Connect4Board
     {
@@ -24,8 +27,6 @@ namespace Connect4Tests
             for (int i = 0; i < board1.Rows; i++)
                 for (int j = 0; j < board1.Columns; j++)
                     Assert.IsTrue(board1.Grid[i, j] == Token.Empty);
-
-
         }
 
         [TestMethod]
@@ -33,23 +34,6 @@ namespace Connect4Tests
         {
             var c4 = new Connect4Board();
             Assert.IsFalse(String.IsNullOrEmpty(c4.ToString()));
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void IsColumnFull_ThrowsExceptionIfColumnIndexPassedIsNegativeInteger()
-        {
-            var c4 = new Connect4BoardTests();
-            c4.IsColumnFull(-1);               
-        }
-
-
-        [TestMethod]
-        [ExpectedException(typeof(IndexOutOfRangeException))]
-        public void IsColumnFull_ThrowsExceptionIfColumnIndexIsGreaterThanGridWidth()
-        {
-            var c4 = new Connect4BoardTests(6,7);
-            c4.IsColumnFull(8);
         }
 
         [TestMethod]
@@ -77,21 +61,21 @@ namespace Connect4Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void SetToken_ThrowsExceptionIfTokenIsEmpty()
+        public void SetUserMove_ThrowsExceptionIfTokenIsEmpty()
         {
             var c4 = new Connect4Board();
-            c4.SetToken(4, Token.Empty);
+            c4.SetUserMove(4, Token.Empty);
         }
 
         [TestMethod]
-        public void SetToken_PlacesTokenInNextEmptySpace()
+        public void SetUserMove_PlacesTokenInNextEmptySpace()
         {
             Connect4BoardTests board;
             int rndNumOfRowsToPopulate;
             CreateBoardWithOneColumnWithRandomNumberRedTokens(out board, out rndNumOfRowsToPopulate);
 
             //Test
-            board.SetToken(1, Token.Yellow);
+            board.SetUserMove(1, Token.Yellow);
 
             int j;
             

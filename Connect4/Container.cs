@@ -14,6 +14,7 @@ namespace Connect4
                 .AddTransient<IGame, TwoPersonGame>()
                 .AddTransient<IBoard, Connect4Board>()
                 .AddTransient<IPlayer, Connect4Player>()
+                .AddSingleton<IDataDevice, ConsoleDevice>()
                 .BuildServiceProvider();
         }
 
