@@ -22,6 +22,8 @@ namespace Connect4
             set;
         }
 
+        public Player() {}
+
         public Player(IDataDevice datadevice)
         {
             DataDevice = datadevice;

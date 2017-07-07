@@ -12,8 +12,8 @@ namespace Connect4Tests
     {
         public TwoPlayerGameTest() : base() { }
 
-        public TwoPlayerGameTest(IBoard board, IDataDevice dataDevice, IPlayer player1, IPlayer player2)
-            : base(board, dataDevice, player1, player2) { }
+        public TwoPlayerGameTest(IBoard board, IDataDevice dataDevice)
+            : base(board, dataDevice) { }
 
         [TestMethod]
         [ExpectedException (typeof(ArgumentNullException))]
@@ -22,37 +22,16 @@ namespace Connect4Tests
             //Mock DataDevice
             Mock<IDataDevice> dataDevice = new Mock<IDataDevice>();
 
-            new TwoPlayerGame(null, dataDevice.Object, new Connect4Player(dataDevice.Object), new Connect4Player(dataDevice.Object));
+            new TwoPlayerGame(null, dataDevice.Object);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void TwoPlayerGame_ConstructorShouldNotAllowNullPlayer1()
-        {
-            //Mock DataDevice
-            Mock<IDataDevice> dataDevice = new Mock<IDataDevice>();
 
-            new TwoPlayerGame(new Connect4Board(), dataDevice.Object, null, new Connect4Player(dataDevice.Object));
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void TwoPlayerGame_ConstructorShouldNotAllowNullPlayer2()
-        {
-            //Mock DataDevice
-            Mock<IDataDevice> dataDevice = new Mock<IDataDevice>();
-
-            new TwoPlayerGame(new Connect4Board(), dataDevice.Object, new Connect4Player(dataDevice.Object), null);
-        }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TwoPlayerGame_ConstructorShouldNotAllowNullDataDevice()
         {
-            //Mock DataDevice
-            Mock<IDataDevice> dataDevice = new Mock<IDataDevice>();
-
-            new TwoPlayerGame(new Connect4Board(), null, new Connect4Player(dataDevice.Object), new Connect4Player(dataDevice.Object));
+            new TwoPlayerGame(new Connect4Board(), null);
         }
 
         [TestMethod]
@@ -64,7 +43,7 @@ namespace Connect4Tests
             dataDevice.Setup(x => x.ReadLine()).Returns("Frodo");
             dataDevice.Setup(x => x.WriteLine(It.IsAny<string>()));
 
-            var game = new TwoPlayerGameTest(board.Object, dataDevice.Object, new Connect4Player(dataDevice.Object), new Connect4Player(dataDevice.Object));
+            var game = new TwoPlayerGameTest(board.Object, dataDevice.Object);
 
             int playerCountWithNames = game.Players.Where(x => !String.IsNullOrEmpty(x.Name)).Count();
             Assert.IsTrue(playerCountWithNames == 0);
@@ -82,7 +61,7 @@ namespace Connect4Tests
             Mock<IBoard> board = new Mock<IBoard>();
             Mock<IDataDevice> dataDevice = new Mock<IDataDevice>();
 
-            var game = new TwoPlayerGameTest(board.Object, dataDevice.Object, new Connect4Player(dataDevice.Object), new Connect4Player(dataDevice.Object));
+            var game = new TwoPlayerGameTest(board.Object, dataDevice.Object);
 
             //Get random movecount form 1 to 42
             var rnd = new Random(DateTime.Now.Millisecond);
