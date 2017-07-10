@@ -3,12 +3,19 @@ using System.Linq;
 using System.Collections.Generic;
 using Connect4.Interfaces;
 
-namespace Connect4
+namespace Connect4.Player
 {
     public class Connect4ComputerPlayer : Player
     {
+        private IAlgorithm _algorithm;
+        
         public Connect4ComputerPlayer() : base() { }
-        public Connect4ComputerPlayer(IDataDevice datadevice) : base(datadevice) { }
+        public Connect4ComputerPlayer(IDataDevice datadevice, IAlgorithm algorithm) 
+            : base(datadevice)
+        {
+            _algorithm = algorithm;
+            base.Name = "R2D2";
+        }
 
         /// <summary>
         /// Implements IBoard.Move : Validates user input and returns the
@@ -21,24 +28,16 @@ namespace Connect4
             if (iBoard == null)
                 throw new ArgumentNullException("iBoard");
 
-            this.DataDevice.WriteLine("...Let me think....");
-            System.Threading.Thread.Sleep(2000);
-            this.DataDevice.WriteLine("...Okay...");
+            this.DataDevice.WriteLine("...Thinking!...");
+            
+            int move = _algorithm.CalculateBestMove(iBoard, this.Token);
 
-            int move = CalculateBestMove(iBoard);
-            return move;
+            this.DataDevice.WriteLine("...Okay - you're turn...");
+
+            return move;            
         }
 
-        protected int CalculateBestMove(IBoard board)
-        {
-            var availableMoves = GetAvailableMoves(board);
-            return availableMoves.First();
-        }
 
-        protected IList<int> GetAvailableMoves(IBoard board)
-        {
-            return new List<int> { 1, 2 };
-        }
 
 
     }

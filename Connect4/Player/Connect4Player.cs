@@ -1,7 +1,7 @@
 ﻿using System;
 using Connect4.Interfaces;
 
-namespace Connect4
+namespace Connect4.Player
 {
     public class Connect4Player : Player
     {

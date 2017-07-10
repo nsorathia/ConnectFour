@@ -2,8 +2,10 @@ using System;
 using System.Linq;
 using Connect4;
 using Connect4.Interfaces;
+using Connect4.Game;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Connect4.Board;
 
 namespace Connect4Tests
 {

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Connect4.Interfaces;
 
-namespace Connect4
+namespace Connect4.Game
 {
     public abstract class Connect4Game : IGame
     {
@@ -39,7 +39,7 @@ namespace Connect4
         /// <summary>
         /// Implements IGame.Play(): Toggles between the two players, displays their move, and test for a win
         /// </summary>
-        public void Play()
+        public virtual void Play()
         {
             SetPlayerNames();
 
@@ -89,8 +89,11 @@ namespace Connect4
 
             //Yellow
             var player2 = Players.FirstOrDefault(x => x.Token == Token.Yellow);
-            DataDevice.WriteLine("What is the Player2's name?");
-            player2.Name = DataDevice.ReadLine();
+            if (String.IsNullOrEmpty(player2.Name))
+            {
+                DataDevice.WriteLine("What is the Player2's name?");
+                player2.Name = DataDevice.ReadLine();
+            }
         }
 
         /// <summary>

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Text;
 using Connect4.Interfaces;
+using System.Collections.Generic;
 
-namespace Connect4
+namespace Connect4.Board
 {
     public class Connect4Board : IBoard
     {
@@ -21,7 +22,27 @@ namespace Connect4
             Initialize();            
         }
 
+        public Connect4Board(Token[,] grid)
+        {
+            this.Rows = grid.GetLength(0);
+            this.Columns = grid.GetLength(1);
+            this.Grid = new Token[this.Rows, this.Columns];
+
+            for (int i = 0; i < this.Rows; i++)
+                for (int j = 0; j < this.Columns; j++)
+                    this.Grid[i, j] = grid[i, j];
+        }
+
         #region Implemented IBoard methods and properties
+
+        /// <summary>
+        /// Implements IBoard.Grid
+        /// </summary>
+        public Token[,] Grid
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Implements IBoard.Rows
@@ -36,6 +57,15 @@ namespace Connect4
         /// Implements IBoard.Columns
         /// </summary>
         public int Columns
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// ColumnIndex of the Last move
+        /// </summary>
+        public int LastMove
         {
             get;
             set;
@@ -72,7 +102,7 @@ namespace Connect4
         /// <returns></returns>
         public bool IsUserMoveValid(int userMove)
         {
-            return IsColumnIndexWithinBounds(userMove) && IsColumnFull(userMove);
+            return IsColumnIndexWithinBounds(userMove) && !IsColumnFull(userMove);
         }
 
         /// <summary>
@@ -87,28 +117,52 @@ namespace Connect4
                 throw new ArgumentException("The token to set must be either Red or Yellow");
 
             int columnIndex = move - 1;
-            int rows = this.Rows;
 
-            for (int i = rows; i > 0; i--)
+            for (int i = this.Rows; i > 0; i--)
             {
+                int rowIndex = i - 1;
                 //sets the token in the lowest empty spot for the column
-                if (this.Grid[i - 1, columnIndex] == Token.Empty)
+                //and set the LastMove property 
+                if (this.Grid[rowIndex, columnIndex] == Token.Empty)
                 {
-                    this.Grid[i - 1, columnIndex] = token;
+                    this.Grid[rowIndex, columnIndex] = token;
+                    this.LastMove = columnIndex;
                     break;
                 }
             }
         }
 
+        //ADD TEST
+        /// <summary>
+        /// Implements IBoad.Clone(): Create a clone for the board.
+        /// </summary>
+        /// <returns></returns>
+        public IBoard Clone()
+        {
+            return new Connect4Board(this.Grid);
+        }
+
+        //ADD TEST
+        /// <summary>
+        /// Implements IBoard.GetAvailableMoves(): Returns a list of columns which are not full
+        /// </summary>
+        /// <param name="board"></param>
+        /// <returns></returns>
+        public IList<int> GetAvailableMoves()
+        {
+            var list = new List<int>();
+
+            for (int i = 0; i < this.Columns; i++)
+            {
+                if (!IsColumnFull(i))
+                    list.Add(i);
+            }
+
+            return list;
+        }
 
         #endregion
 
-        public Token[,] Grid
-        {
-            get;
-            private set;
-        }
-        
         /// <summary>
         /// String Representation of the Connect4 Board. [X: Red], [O: Yellow], [#: Empty]
         /// </summary>
@@ -162,13 +216,12 @@ namespace Connect4
         protected bool IsColumnIndexWithinBounds(int columnIndex)
         {
             int uBound = this.Grid.GetUpperBound(1);
-            if (columnIndex > 0 && columnIndex <= uBound)
+            if (columnIndex >= 0 && columnIndex <= uBound)
                 return true;
 
             return false;
-
-
         }
+
 
         /// <summary>
         /// Determines if the specified Column is Full
