@@ -1,6 +1,6 @@
 ﻿using Connect4.Interfaces;
 
-namespace Connect4
+namespace Connect4.Player
 {
     public abstract class Player : IPlayer
     {
@@ -21,6 +21,8 @@ namespace Connect4
             get;
             set;
         }
+
+        public Player() {}
 
         public Player(IDataDevice datadevice)
         {

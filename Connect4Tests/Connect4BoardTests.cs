@@ -1,6 +1,7 @@
 ﻿using System;
 using Connect4;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Connect4.Board;
 
 namespace Connect4Tests
 {

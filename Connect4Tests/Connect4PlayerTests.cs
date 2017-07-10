@@ -1,8 +1,10 @@
 ﻿using System;
 using Connect4;
 using Connect4.Interfaces;
+using Connect4.Player;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+
 
 namespace Connect4Tests
 {
