@@ -45,6 +45,7 @@ namespace Connect4.Game
 
             //Display initial board.
             DataDevice.WriteLine(Board.ToString());
+            DataDevice.WriteLine(String.Empty);
             DataDevice.WriteLine("Let's Begin!!!");
 
             int totalMoves = Board.Rows * Board.Columns;
@@ -60,6 +61,7 @@ namespace Connect4.Game
                 this.Board.SetUserMove(column, player.Token);
 
                 //display the board.
+                DataDevice.WriteLine(String.Empty);
                 DataDevice.WriteLine(Board.ToString());
 
                 //check for win or draw.
@@ -84,8 +86,11 @@ namespace Connect4.Game
         {
             //Red
             var player1 = Players.FirstOrDefault(x => x.Token == Token.Red);
-            DataDevice.WriteLine("What is the Player1's name?");
-            player1.Name = DataDevice.ReadLine();
+            if (String.IsNullOrEmpty(player1.Name))
+            {
+                DataDevice.WriteLine("What is the Player1's name?");
+                player1.Name = DataDevice.ReadLine();
+            }
 
             //Yellow
             var player2 = Players.FirstOrDefault(x => x.Token == Token.Yellow);

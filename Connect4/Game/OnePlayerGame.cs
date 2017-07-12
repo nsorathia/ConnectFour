@@ -14,10 +14,11 @@ namespace Connect4.Game
         public OnePlayerGame(IBoard board, IDataDevice dataDevice, IAlgorithm algorithm)
             : base(board, dataDevice)
         {
-            IPlayer player1 = new Connect4Player(dataDevice);
+
+            IPlayer player1 = new Connect4ComputerPlayer(dataDevice, algorithm);
             player1.Token = Token.Red;
 
-            IPlayer player2 = new Connect4ComputerPlayer(dataDevice, algorithm);
+            IPlayer player2 = new Connect4Player(dataDevice);
             player2.Token = Token.Yellow;
 
             Players = new List<IPlayer>() { player1, player2 };
