@@ -31,11 +31,14 @@ namespace Connect4.Player
                 {
                     this.DataDevice.WriteLine("...You must enter a numeric value. Try again.");
                     continue;
-                }                    
+                }
 
                 //validate user choice is within bounds and that the column is not full
                 if (!iBoard.IsUserMoveValid(column - 1))
-                    this.DataDevice.WriteLine("...The column you chose is full. Try another");
+                {
+                    this.DataDevice.WriteLine("...Try another column, your choice is not valid");
+                    column = 0;  //reset 
+                }
             }
 
             return column;
