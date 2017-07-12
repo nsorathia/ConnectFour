@@ -48,7 +48,7 @@ namespace Connect4.Algorithm
         /// <param name="board"></param>
         /// <param name="token"></param>
         /// <returns>int: column number of the best move</returns>
-        public int CalculateBestMove(IBoard board, Token token)
+        public virtual int CalculateBestMove(IBoard board, Token token)
         {
             if (board == null)
                 throw new ArgumentNullException("board");
@@ -117,7 +117,7 @@ namespace Connect4.Algorithm
         /// <param name="boardVersion"></param>
         /// <param name="token"></param>
         /// <param name="level">number of recursion levels/depth of play</param>
-        protected void GraphVersions(BoardVersion boardVersion, Token token, int level)
+        protected virtual void GraphVersions(BoardVersion boardVersion, Token token, int level)
         {
             if (boardVersion == null)
                 throw new ArgumentNullException("boardVersion");
@@ -152,15 +152,16 @@ namespace Connect4.Algorithm
         /// <param name="version"></param>
         /// <param name="level"></param>
         /// <returns></returns>
-        protected int CalculateScore(BoardVersion version, int level)
+        protected virtual int CalculateScore(BoardVersion version, int level)
         {
             if (version == null)
                 throw new ArgumentNullException("version");
 
             if (level < 0)
                 throw new ArgumentException("The depthLevel can not be less than 0");
-
+            
             int score = 0;
+
             int pointsforLevel = (int)Math.Pow(10, level);
             
             //check if this board version is a win.
@@ -169,43 +170,20 @@ namespace Connect4.Algorithm
 
             //Check if the Opposing player can win in the next move, then  
             // subtract the same point level for this board's move version.
-            else if (DoesBoardVersionsContainAWin(version.OppMoveVersions))
+            else if (version.OppMoveVersions.Any(x => x.Board.CheckForWin(x.Board.LastMove + 1)))
                 score = -pointsforLevel;
             
             else   
             {
                 //Neither player can win on this play so drill down 
-                //one level and check for a win with an additional play
+                //one level and calculate score for each Opponent move                                
                 foreach (var oppMove in version.OppMoveVersions)
-                    score += CalculateScore(oppMove, level - 1);
+                    score -= CalculateScore(oppMove, level - 1);
             }
 
             return score;
         }
-
-        /// <summary>
-        /// Determines if the opposing player has a possible win 
-        /// </summary>
-        /// <param name="versions"></param>
-        /// <returns></returns>
-        protected bool DoesBoardVersionsContainAWin(IList<BoardVersion> versions)
-        {
-            if (versions == null)
-                throw new ArgumentNullException("versions");
-            
-            bool win = false;
-
-            foreach (var version in versions)
-            {
-                if (version.Board.CheckForWin(version.Board.LastMove + 1))
-                {
-                    win = true;
-                    break;
-                }
-            }
-
-            return win;
-        }
+        
 
         /// <summary>
         /// Returns a new BoardVersion and sets the Token to the given move.
@@ -241,7 +219,7 @@ namespace Connect4.Algorithm
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        private Token GetOpposingToken(Token token)
+        protected Token GetOpposingToken(Token token)
         {
             if (token == Token.Red)
                 return Token.Yellow;

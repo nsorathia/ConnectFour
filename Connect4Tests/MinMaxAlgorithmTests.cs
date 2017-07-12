@@ -163,64 +163,7 @@ namespace Connect4Tests
             algo.CreateBoardVersion(mockBoard.Object, 2, Token.Empty);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void DoesBoardVersionsContainAWin_ThrowsExceptionifListIsNull()
-        {
-            var algo = new MinMaxAlgorithmTests();
-
-            algo.DoesBoardVersionsContainAWin(null);
-        }
-
-        [TestMethod]
-        public void DoesBoardVersionsContainAWin_ReturnsTrueIfAtleastOneVersionIsWin()
-        {
-            var board = new Connect4Board();
-            board.SetUserMove(1, Token.Red);
-            board.SetUserMove(2, Token.Red);
-            board.SetUserMove(3, Token.Red);
-
-            var algo = new MinMaxAlgorithmTests();
-
-
-            int columnIndex = 3;
-
-            //winner
-            var v1 = algo.CreateBoardVersion(board.Clone(), columnIndex, Token.Red);
-
-            //other versions
-            var v2 = algo.CreateBoardVersion(board.Clone(), columnIndex++, Token.Red);
-            var v3 = algo.CreateBoardVersion(board.Clone(), columnIndex++, Token.Red);
-            var v4 = algo.CreateBoardVersion(board.Clone(), columnIndex++, Token.Red);
-            
-            var versions = new List<BoardVersion> { v1, v2, v3, v4 };
-
-            Assert.IsTrue(algo.DoesBoardVersionsContainAWin(versions));
-        }
-
-        [TestMethod]
-        public void DoesBoardVersionsContainAWin_ReturnsFalseIfNoVersionIsAWin()
-        {
-            var board = new Connect4Board();
-            int columnNumber = 1;
-            board.SetUserMove(columnNumber, Token.Red);
-            board.SetUserMove(columnNumber++, Token.Red);
-            board.SetUserMove(columnNumber++, Token.Red);
-
-            var algo = new MinMaxAlgorithmTests();
-
-            //other versions
-            int columnIndex = 4;
-            var v1 = algo.CreateBoardVersion(board.Clone(), columnIndex, Token.Red);
-            var v2 = algo.CreateBoardVersion(board.Clone(), columnIndex++, Token.Red);
-            var v3 = algo.CreateBoardVersion(board.Clone(), columnIndex++, Token.Red);
-            
-            var versions = new List<BoardVersion> { v1, v2, v3};
-
-            Assert.IsFalse(algo.DoesBoardVersionsContainAWin(versions));
-        }
-        
-        
+       
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetIndexOfBestScoredMove_ThrowsExceptionVersionsisNull()
