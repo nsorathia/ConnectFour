@@ -20,7 +20,8 @@ namespace Connect4
                 .AddTransient<IBoard, Connect4Board>()
                 .AddSingleton<IDataDevice, ConsoleDevice>()
                 .AddTransient<IPlayer, Connect4Player>()
-                .AddSingleton<IAlgorithm, MinMaxAlgorithm>()
+                //.AddSingleton<IAlgorithm, MinMaxAlgorithm>()
+                .AddSingleton<IAlgorithm, MinMaxWithABPruning>()
                 .BuildServiceProvider();
         }
 
