@@ -9,6 +9,7 @@ namespace Connect4.Board
     {
         public const int NUM_OF_CONSECUTIVE_TOKENS_FOR_WIN = 4;
 
+        #region Constr
 
         //default constuctor sets grid to 6 rows and 7 columns
         public Connect4Board() : this(6, 7) { }
@@ -32,6 +33,8 @@ namespace Connect4.Board
                 for (int j = 0; j < this.Columns; j++)
                     this.Grid[i, j] = grid[i, j];
         }
+
+        #endregion
 
         #region Implemented IBoard methods and properties
 
@@ -132,7 +135,7 @@ namespace Connect4.Board
             }
         }
 
-        //ADD TEST
+        //TODO: ADD TEST
         /// <summary>
         /// Implements IBoad.Clone(): Create a clone for the board.
         /// </summary>
@@ -142,7 +145,7 @@ namespace Connect4.Board
             return new Connect4Board(this.Grid);
         }
 
-        //ADD TEST
+        //TODO:  ADD TEST
         /// <summary>
         /// Implements IBoard.GetAvailableMoves(): Returns a list of columns which are not full
         /// </summary>
