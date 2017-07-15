@@ -14,7 +14,7 @@ namespace Connect4.Algorithm
         #region Cnstrs
 
         public MinMaxAlgorithm()
-            : this(ChallengeLevel.Hard) //4
+            : this(ChallengeLevel.MediumHard) //4
         {         
         }
 
@@ -67,7 +67,7 @@ namespace Connect4.Algorithm
                 //create a new Board version with an empty graph of possible plays
                 newVersions[i] = CreateBoardVersion(board, availableMoves[i], token);
 
-                //recursively create a graph N levels deep.
+                //recursively creates board version graph N levels deep.
                 GraphVersions(newVersions[i], GetOpposingToken(token), this.LevelOfDifficulty);
 
                 //Calculate the score for each move given the graph of the boardVersion.
