@@ -6,12 +6,12 @@ namespace Connect4
 {
     public class ConsoleDevice : IDataDevice
     {
-        public string ReadLine()
+        public string ReadData()
         {
             return Console.ReadLine();
         }
 
-        public void WriteLine(string input)
+        public void WriteData(string input)
         {
             Console.WriteLine(input);
         }

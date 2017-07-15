@@ -6,7 +6,7 @@ namespace Connect4.Interfaces
 {
     public interface IDataDevice
     {
-        string ReadLine();
-        void WriteLine(string input);
+        string ReadData();
+        void WriteData(string input);
     }
 }
