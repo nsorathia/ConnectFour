@@ -6,7 +6,6 @@ namespace Connect4.Interfaces
 {
     public interface IGame
     {
-        IList<IPlayer> Players { get; set; }
         void Play();
     }
 }
