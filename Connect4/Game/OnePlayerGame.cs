@@ -11,14 +11,12 @@ namespace Connect4.Game
         public OnePlayerGame() { }
 
         //creates a two player game and sets the players name
-        public OnePlayerGame(IBoard board, IDataDevice dataDevice, IAlgorithm algorithm)
+        public OnePlayerGame(IBoard board, IDataDevice dataDevice, IAlgorithm algorithm, IPlayer player2)
             : base(board, dataDevice)
         {
 
             IPlayer player1 = new Connect4ComputerPlayer(dataDevice, algorithm);
             player1.Token = Token.Red;
-
-            IPlayer player2 = new Connect4Player(dataDevice);
             player2.Token = Token.Yellow;
 
             Players = new List<IPlayer>() { player1, player2 };
@@ -31,8 +29,8 @@ namespace Connect4.Game
 
             do
             {
-                this.DataDevice.WriteLine("Please enter a level of difficulty. 1:Easy, 2:Medium, 3:MediumHard, 4:Hard, 5:VeryHard, 6:Expert ");
-                input = this.DataDevice.ReadLine();
+                this.DataDevice.WriteData("Please enter a level of difficulty. 1:Easy, 2:Medium, 3:MediumHard, 4:Hard, 5:VeryHard, 6:Expert ");
+                input = this.DataDevice.ReadData();
             } while (!Enum.TryParse<ChallengeLevel>(input, out level));
 
             //set the level of difficulty

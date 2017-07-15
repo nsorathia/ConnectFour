@@ -5,6 +5,7 @@ using Connect4.Interfaces;
 using Connect4.Game;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Connect4.Player;
 using Connect4.Board;
 
 namespace Connect4Tests
@@ -14,8 +15,8 @@ namespace Connect4Tests
     {
         public TwoPlayerGameTest() : base() { }
 
-        public TwoPlayerGameTest(IBoard board, IDataDevice dataDevice)
-            : base(board, dataDevice) { }
+        public TwoPlayerGameTest(IBoard board, IDataDevice dataDevice, IPlayer player1, IPlayer player2)
+            : base(board, dataDevice, player1, player2) { }
 
         [TestMethod]
         [ExpectedException (typeof(ArgumentNullException))]
@@ -23,8 +24,10 @@ namespace Connect4Tests
         {
             //Mock DataDevice
             Mock<IDataDevice> dataDevice = new Mock<IDataDevice>();
+            Mock<IPlayer> player1 = new Mock<IPlayer>();
+            Mock<IPlayer> player2 = new Mock<IPlayer>();
 
-            new TwoPlayerGame(null, dataDevice.Object);
+            new TwoPlayerGame(null, dataDevice.Object, player1.Object, player2.Object);
         }
 
 
@@ -33,7 +36,9 @@ namespace Connect4Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void TwoPlayerGame_ConstructorShouldNotAllowNullDataDevice()
         {
-            new TwoPlayerGame(new Connect4Board(), null);
+            Mock<IPlayer> player1 = new Mock<IPlayer>();
+            Mock<IPlayer> player2 = new Mock<IPlayer>();
+            new TwoPlayerGame(new Connect4Board(), null, player1.Object, player2.Object);
         }
 
         [TestMethod]
@@ -42,10 +47,12 @@ namespace Connect4Tests
             //Mock DataDevice
             Mock<IBoard> board = new Mock<IBoard>();
             Mock<IDataDevice> dataDevice = new Mock<IDataDevice>();
-            dataDevice.Setup(x => x.ReadLine()).Returns("Frodo");
-            dataDevice.Setup(x => x.WriteLine(It.IsAny<string>()));
+            var player1 = new Connect4Player(dataDevice.Object);
+            var player2 = new Connect4Player(dataDevice.Object);
+            dataDevice.Setup(x => x.ReadData()).Returns("Frodo");
+            dataDevice.Setup(x => x.WriteData(It.IsAny<string>()));
 
-            var game = new TwoPlayerGameTest(board.Object, dataDevice.Object);
+            var game = new TwoPlayerGameTest(board.Object, dataDevice.Object, player1, player2);
 
             int playerCountWithNames = game.Players.Where(x => !String.IsNullOrEmpty(x.Name)).Count();
             Assert.IsTrue(playerCountWithNames == 0);
@@ -62,8 +69,10 @@ namespace Connect4Tests
             //Mock DataDevice
             Mock<IBoard> board = new Mock<IBoard>();
             Mock<IDataDevice> dataDevice = new Mock<IDataDevice>();
+            var player1 = new Connect4Player(dataDevice.Object);
+            var player2 = new Connect4Player(dataDevice.Object);
 
-            var game = new TwoPlayerGameTest(board.Object, dataDevice.Object);
+            var game = new TwoPlayerGameTest(board.Object, dataDevice.Object, player1, player2);
 
             //Get random movecount form 1 to 42
             var rnd = new Random(DateTime.Now.Millisecond);
