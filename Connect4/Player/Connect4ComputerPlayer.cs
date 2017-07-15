@@ -28,11 +28,11 @@ namespace Connect4.Player
             if (iBoard == null)
                 throw new ArgumentNullException("iBoard");
 
-            this.DataDevice.WriteLine("...Thinking!...");
+            this.DataDevice.WriteData("...Thinking!...");
             
             int move = _algorithm.CalculateBestMove(iBoard, this.Token);
 
-            this.DataDevice.WriteLine("...Okay - you're turn...");
+            this.DataDevice.WriteData("...Okay - you're turn...");
 
             return move;            
         }

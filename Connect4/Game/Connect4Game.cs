@@ -19,9 +19,6 @@ namespace Connect4.Game
             protected set;
         }
 
-        /// <summary>
-        /// Implements IGame.Players 
-        /// </summary>
         public IList<IPlayer> Players
         {
             get; set;
@@ -44,9 +41,9 @@ namespace Connect4.Game
             SetPlayerNames();
 
             //Display initial board.
-            DataDevice.WriteLine(Board.ToString());
-            DataDevice.WriteLine(String.Empty);
-            DataDevice.WriteLine("Let's Begin!!!");
+            DataDevice.WriteData(Board.ToString());        
+            DataDevice.WriteData(String.Empty);
+            DataDevice.WriteData("Let's Begin!!!");
 
             int totalMoves = Board.Rows * Board.Columns;
             for (int i = 1; i <= totalMoves; i++)
@@ -61,18 +58,18 @@ namespace Connect4.Game
                 this.Board.SetUserMove(column, player.Token);
 
                 //display the board.
-                DataDevice.WriteLine(String.Empty);
-                DataDevice.WriteLine(Board.ToString());
+                DataDevice.WriteData(String.Empty);
+                DataDevice.WriteData(Board.ToString());
 
                 //check for win or draw.
                 if (this.Board.CheckForWin(column))
                 {
-                    DataDevice.WriteLine(string.Format("*********  {0} WON...Congratulations!!!", player.Name.ToUpper()));
+                    DataDevice.WriteData(string.Format("*********  {0} WON...Congratulations!!!", player.Name.ToUpper()));
                     break;
                 }
                 else if (i == totalMoves)
                 {
-                    DataDevice.WriteLine("The board is filled and the game is a draw...Sorry no winner.");
+                    DataDevice.WriteData("The board is filled and the game is a draw...Sorry no winner.");
                     break;
                 }
             }
@@ -88,16 +85,16 @@ namespace Connect4.Game
             var player1 = Players.FirstOrDefault(x => x.Token == Token.Red);
             if (String.IsNullOrEmpty(player1.Name))
             {
-                DataDevice.WriteLine("What is the Player1's name?");
-                player1.Name = DataDevice.ReadLine();
+                DataDevice.WriteData("What is the Player1's name?");
+                player1.Name = DataDevice.ReadData();
             }
 
             //Yellow
             var player2 = Players.FirstOrDefault(x => x.Token == Token.Yellow);
             if (String.IsNullOrEmpty(player2.Name))
             {
-                DataDevice.WriteLine("What is the Player2's name?");
-                player2.Name = DataDevice.ReadLine();
+                DataDevice.WriteData("What is the Player2's name?");
+                player2.Name = DataDevice.ReadData();
             }
         }
 

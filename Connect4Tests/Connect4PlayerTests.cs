@@ -17,8 +17,8 @@ namespace Connect4Tests
         {
             //Mock DataDevice
             Mock<IDataDevice> dataDevice = new Mock<IDataDevice>();
-            dataDevice.Setup(x => x.ReadLine()).Returns("4");
-            dataDevice.Setup(x => x.WriteLine(It.IsAny<string>()));
+            dataDevice.Setup(x => x.ReadData()).Returns("4");
+            dataDevice.Setup(x => x.WriteData(It.IsAny<string>()));
 
             var player = new Connect4Player(dataDevice.Object);
 
@@ -31,8 +31,8 @@ namespace Connect4Tests
         {
             //Mock DataDevice
             Mock<IDataDevice> dataDevice = new Mock<IDataDevice>();
-            dataDevice.Setup(x => x.ReadLine()).Returns("4");
-            dataDevice.Setup(x => x.WriteLine(It.IsAny<string>()));
+            dataDevice.Setup(x => x.ReadData()).Returns("4");
+            dataDevice.Setup(x => x.WriteData(It.IsAny<string>()));
 
             var player = new Connect4Player(dataDevice.Object);
             
