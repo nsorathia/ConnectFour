@@ -10,11 +10,11 @@ namespace Connect4.Game
     {
         public OnePlayerGame() { }
 
-        //creates a two player game and sets the players name
+        //creates a one player game
         public OnePlayerGame(IBoard board, IDataDevice dataDevice, IAlgorithm algorithm, IPlayer player2)
             : base(board, dataDevice)
         {
-
+            //TODO: Inject Connect4ComputerPlayer - dependant on new IOC 
             IPlayer player1 = new Connect4ComputerPlayer(dataDevice, algorithm);
             player1.Token = Token.Red;
             player2.Token = Token.Yellow;

@@ -11,7 +11,7 @@ namespace Connect4.Game
                 
         public TwoPlayerGame() { }
 
-        //creates a two player game and sets the players name
+        //creates a two player game and set players tokens
         public TwoPlayerGame(IBoard board, IDataDevice dataDevice, IPlayer player1, IPlayer player2)
             : base(board, dataDevice)
         {

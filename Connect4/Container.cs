@@ -8,6 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Connect4
 {
+
+    //TODO:  Utilize a different IOC (Autofac, StructureMap)
+    //  Need a full featured IOC that supports multiple implementation per type. 
     public static class Container
     {
         private static IServiceProvider _instance;
