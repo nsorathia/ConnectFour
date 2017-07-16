@@ -14,7 +14,7 @@ namespace Connect4.Algorithm
         #region Cnstrs
 
         public MinMaxAlgorithm()
-            : this(ChallengeLevel.MediumHard) //4
+            : this(ChallengeLevel.Hard) //5
         {         
         }
 
