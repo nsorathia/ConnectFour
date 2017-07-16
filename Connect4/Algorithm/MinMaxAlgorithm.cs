@@ -6,6 +6,12 @@ using Connect4.Board;
 
 namespace Connect4.Algorithm
 {
+    /// <summary>
+    /// Algorithm thats scores moves for two player games 
+    /// which attempts to assign a min or max score for the move 
+    /// given the depth of move graph.
+    /// 
+    /// </summary>
     public class MinMaxAlgorithm : IAlgorithm
     {
 
@@ -59,7 +65,7 @@ namespace Connect4.Algorithm
             //Collection of all available colunmns which are not full
             var availableMoves = board.GetAvailableMoves();
 
-            //create a score Collection - per available move
+            //create a version of the board per available move
             var newVersions = new BoardVersion[availableMoves.Count];
 
             for (int i = 0; i < availableMoves.Count; i++)
@@ -80,36 +86,7 @@ namespace Connect4.Algorithm
         }
 
         #endregion IAgorithm implementation
-
-
-        /// <summary>
-        /// Returns an index of a move that scored highest.
-        /// </summary>
-        /// <param name="boardVersions"></param>
-        /// <returns>int: move index</returns>
-        protected int GetIndexOfBestScoredMove(BoardVersion[] boardVersions)
-        {
-            if (boardVersions == null)
-                throw new ArgumentNullException("boardVersions");
-
-            if (boardVersions.Length == 0)
-                throw new ArgumentException("The BoarVersions must conatain at least one element");
-            
-            //iterate through and find the max pts from all board version
-            int maxPts = boardVersions.Select(x => x.Points).Max();
-
-            //iterate again and find the indexes of the versions that have the max score.
-            var indexesWithMaxPts = Enumerable.Range(0, boardVersions.Length)
-                    .Where(i => boardVersions[i].Points == maxPts)
-                    .ToList();
-            
-            //randomly choose one of the max pt indexes
-            var randomMaxIndex = indexesWithMaxPts[_random.Next(0, indexesWithMaxPts.Count)];
-
-            return randomMaxIndex;
-
-        }
-        
+ 
         /// <summary>
         /// Recursively creates a graph of N possible plays for 
         /// opposing tokens.  
@@ -136,6 +113,8 @@ namespace Connect4.Algorithm
             {
                 var clonedBoardVersion = CreateBoardVersion(boardVersion.Board, availableMoves[i], token);
                 
+                //TODO Test:  End graphing once a win is determined.
+
                 //recursive call with opposing token and one level deeper.
                 GraphVersions(clonedBoardVersion, GetOpposingToken(token), level - 1);
 
@@ -169,14 +148,14 @@ namespace Connect4.Algorithm
                 score = pointsforLevel;
 
             //Check if the Opposing player can win in the next move, then  
-            // subtract the same point level for this board's move version.
+            // subtract the same points for this level.
             else if (version.OppMoveVersions.Any(x => x.Board.CheckForWin(x.Board.LastMove + 1)))
                 score = -pointsforLevel;
             
             else   
             {
                 //Neither player can win on this play so drill down 
-                //one level and calculate score for each Opponent move                                
+                //one level and calculate score for each Opposing move                                
                 foreach (var oppMove in version.OppMoveVersions)
                     score -= CalculateScore(oppMove, level - 1);
             }
@@ -184,7 +163,34 @@ namespace Connect4.Algorithm
             return score;
         }
         
+        /// <summary>
+        /// Returns an index of a move that scored highest.
+        /// </summary>
+        /// <param name="boardVersions"></param>
+        /// <returns>int: move index</returns>
+        protected int GetIndexOfBestScoredMove(BoardVersion[] boardVersions)
+        {
+            if (boardVersions == null)
+                throw new ArgumentNullException("boardVersions");
 
+            if (boardVersions.Length == 0)
+                throw new ArgumentException("The BoarVersions must conatain at least one element");
+
+            //iterate through and find the max pts from all board version
+            int maxPts = boardVersions.Select(x => x.Points).Max();
+
+            //iterate again and find the indexes of the versions that have the max score.
+            var indexesWithMaxPts = Enumerable.Range(0, boardVersions.Length)
+                    .Where(i => boardVersions[i].Points == maxPts)
+                    .ToList();
+
+            //randomly choose one of the max pt indexes
+            var randomMaxIndex = indexesWithMaxPts[_random.Next(0, indexesWithMaxPts.Count)];
+
+            return randomMaxIndex;
+
+        }
+        
         /// <summary>
         /// Returns a new BoardVersion and sets the Token to the given move.
         /// </summary>
